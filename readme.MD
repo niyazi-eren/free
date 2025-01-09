@@ -14,7 +14,7 @@
     cd free
     docker-compose -f compose.backend.yaml up
 
-3. Run tests
+3. Run tests (you need Java)
     ```bash
     ./mvnw test
    
@@ -31,8 +31,8 @@ or locally http://localhost:8080/swagger-ui/index.html#/
 ## Key Features
 - All endpoints are implemented, tested and documented (Freelancer creation is fully documented)
 - The asynchronous workload is handled with a queue using RabbitMQ
-- The Api is deployed using Docker-compose on ec2
-- Created specific projection DTOS and optimized query for GET /api/freelancers
+- The app container is built using Paketo buildpacks.
+- The API is deployed using Docker-compose on ec2
 - Used TestContainers to start a Postgresql container for tests
 - Flyway for schema versioning
 
