@@ -2,7 +2,6 @@ package odine.freelancermarketplace.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import odine.freelancermarketplace.dto.projection.FreelancerDetailsProj;
 import odine.freelancermarketplace.dto.web.FreelancerCreationRequest;
 import odine.freelancermarketplace.exception.FreelancerAlreadyExistsException;
 import odine.freelancermarketplace.exception.FreelancerNotFoundException;
@@ -12,6 +11,7 @@ import odine.freelancermarketplace.repository.DesignToolRepository;
 import odine.freelancermarketplace.repository.FreelancerRepository;
 import odine.freelancermarketplace.repository.LanguageRepository;
 import odine.freelancermarketplace.repository.SpecialtyRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,8 +65,8 @@ public class FreelancerService {
         return freelancer;
     }
 
-    public List<FreelancerDetailsProj> findAll() {
-        return freelancerRepository.findAllFreelancers();
+    public List<Freelancer> findAll(Pageable pageable) {
+        return freelancerRepository.findAllFreelancers(pageable).getContent();
     }
 
     public Freelancer findFreelancerByEmail(String email) {

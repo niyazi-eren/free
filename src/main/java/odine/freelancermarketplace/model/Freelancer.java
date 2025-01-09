@@ -1,6 +1,5 @@
 package odine.freelancermarketplace.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +35,6 @@ public class Freelancer {
     private FreelancerType freelancerType;
 
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private Set<Job> jobs;
 
     @Override

@@ -1,7 +1,8 @@
 package odine.freelancermarketplace.repository;
 
-import odine.freelancermarketplace.dto.projection.FreelancerDetailsProj;
 import odine.freelancermarketplace.model.Freelancer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,15 +41,14 @@ public interface FreelancerRepository extends JpaRepository<Freelancer, Long> {
             @Param("designTools") List<String> designTools
     );
 
-    // Need plugin for eager fetch on ManyToMany associations
-    @Query("""
+    @Query(value = """
             SELECT f
             FROM Freelancer f
-            LEFT JOIN FETCH SoftwareDeveloper sd ON f.id = sd.id
-            LEFT JOIN sd.specialties spec
-            LEFT JOIN FETCH Designer d ON f.id = d.id
-            LEFT JOIN d.designTools tools
-            LEFT JOIN FETCH f.jobs
+            LEFT JOIN FETCH f.jobs j
+            LEFT JOIN FETCH j.comments
+            LEFT JOIN FETCH f.designTools
+            LEFT JOIN FETCH f.languages
+            LEFT JOIN FETCH f.specialties
             """)
-    List<FreelancerDetailsProj> findAllFreelancers();
+    Page<Freelancer> findAllFreelancers(Pageable pageable);
 }

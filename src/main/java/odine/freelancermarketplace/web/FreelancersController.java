@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import odine.freelancermarketplace.dto.projection.FreelancerDetailsProj;
 import odine.freelancermarketplace.dto.projection.JobProj;
 import odine.freelancermarketplace.dto.web.FreelancerCreationRequest;
 import odine.freelancermarketplace.model.Freelancer;
 import odine.freelancermarketplace.service.FreelancerService;
 import odine.freelancermarketplace.service.JobService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,10 @@ public class FreelancersController {
     }
 
     @GetMapping
-    public List<FreelancerDetailsProj> getAllFreelancers() {
-        return freelancerService.findAll();
+    public List<Freelancer> getAllFreelancers(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return freelancerService.findAll(pageable);
     }
 
     @GetMapping("/{email}")
