@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f908cca8-2cd4-4687-b73c-d02bc3af12e6",
+		"_postman_id": "7e2aba63-f83c-43dd-b9e4-b56e5aba720e",
 		"name": "Freelance API integ",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40846776"
@@ -252,7 +252,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"job_id\": 1,\n  \"commenter_name\": \"Jone\",\n  \"content\": \"I'd like to apply!\"\n}\n",
+					"raw": "{\n\n  \"commenter_name\": \"Jone\",\n  \"content\": \"I'd like to apply!\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -260,12 +260,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/comments",
+					"raw": "{{url}}/api/jobs/1/comments",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
+						"jobs",
+						"1",
 						"comments"
 					]
 				}

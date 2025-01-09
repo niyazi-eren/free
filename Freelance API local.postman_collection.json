@@ -252,7 +252,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"job_id\": 1,\n  \"commenter_name\": \"Jone\",\n  \"content\": \"I'd like to apply!\"\n}\n",
+					"raw": "{\n  \"commenter_name\": \"Jone\",\n  \"content\": \"I'd like to apply!\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -260,12 +260,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/comments",
+					"raw": "{{url}}/api/jobs/1/comments",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
+						"jobs",
+						"1",
 						"comments"
 					]
 				}
