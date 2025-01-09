@@ -1,5 +1,6 @@
 package odine.freelancermarketplace.web;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import odine.freelancermarketplace.dto.projection.JobDetailsProj;
@@ -18,6 +19,7 @@ import java.util.Set;
 @RequestMapping("/api/jobs")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Jobs")
 public class JobsController {
     private final JobService jobService;
     private final CommentService commentService;

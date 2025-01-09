@@ -1,5 +1,9 @@
 package odine.freelancermarketplace.web;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import odine.freelancermarketplace.dto.projection.JobProj;
@@ -16,11 +20,20 @@ import java.util.List;
 @RequestMapping("/api/freelancers")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Freelancers")
 public class FreelancersController {
     private final FreelancerService freelancerService;
     private final JobService jobService;
 
-
+    @Operation(
+            summary = "${api.freelancer.create-freelancer.description}",
+            description = "${api.freelancer.create-freelancer.notes}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "${api.responseCodes.ok.description}"),
+            @ApiResponse(responseCode = "400", description = "${api.responseCodes.badRequest.description}"),
+            @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}"),
+            @ApiResponse(responseCode = "422", description = "${api.responseCodes.unprocessableEntity.description}")
+    })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Freelancer createFreelancer(@RequestBody FreelancerCreationRequest request) {

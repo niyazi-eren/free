@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: classpath:/swagger-api.yml
+
   application:
     name: freelancer-marketplace
 
@@ -28,3 +31,8 @@ spring:
       ddl-auto: validate
     show-sql: true
 
+springdoc:
+  swagger-ui:
+    enabled: true
+
+  packages-to-scan: odine.freelancermarketplace.web
