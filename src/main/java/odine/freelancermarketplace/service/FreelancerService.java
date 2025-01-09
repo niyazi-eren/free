@@ -2,6 +2,7 @@ package odine.freelancermarketplace.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import odine.freelancermarketplace.dto.projection.FreelancerDetailsProj;
 import odine.freelancermarketplace.dto.web.FreelancerCreationRequest;
 import odine.freelancermarketplace.exception.FreelancerAlreadyExistsException;
 import odine.freelancermarketplace.exception.FreelancerNotFoundException;
@@ -64,8 +65,8 @@ public class FreelancerService {
         return freelancer;
     }
 
-    public List<Freelancer> findAll() {
-        return freelancerRepository.findAll();
+    public List<FreelancerDetailsProj> findAll() {
+        return freelancerRepository.findAllFreelancers();
     }
 
     public Freelancer findFreelancerByEmail(String email) {

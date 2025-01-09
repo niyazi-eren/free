@@ -3,6 +3,7 @@ package odine.freelancermarketplace.dto.projection;
 import odine.freelancermarketplace.enums.JobStatus;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public interface JobDetailsProj {
     Long getId();
@@ -14,4 +15,6 @@ public interface JobDetailsProj {
     JobStatus getJobStatus();
 
     Long getFreelancerId();
+
+    Set<CommentProj> getComments();
 }
