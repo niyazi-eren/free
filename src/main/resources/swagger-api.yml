@@ -1,0 +1,47 @@
+api:
+  responseCodes:
+    ok.description: OK, the freelancer has been successfully created.
+    badRequest.description: Bad Request, invalid format of the request. See response message for more information.
+    notFound.description: Not Found, the specified freelancer could not be found.
+    unprocessableEntity.description: Unprocessable Entity, input parameters caused the processing to fail. See response message for more information.
+
+  freelancer:
+    create-freelancer:
+      description: Creates a new freelancer entry in the system.
+      notes: |
+        # Request Processing
+        The endpoint handles the following:
+        1. Email uniqueness validation
+        2. Freelancer type-specific attribute processing
+        3. Asynchronous score evaluation
+        4. Profile creation and storage
+    
+        # Type-Specific Requirements
+    
+        ## Designer
+        - Portfolio URL
+        - Design tools list
+        
+        ## Software Developer
+        - Programming languages
+        - Technical specialties
+        
+        The following cases may arise during the process:
+        
+        ## Invalid Data 
+        400 - A **Bad Request** error will be returned for:
+        - Missing required fields
+        - Invalid email format
+        - Invalid freelancer type
+        - Malformed request body
+
+        ## Successful Creation
+        201 - Freelancer successfully created and saved in the system.
+        
+        ## Not found
+        404 - Freelancer is not found
+
+        ## Existing Freelancer
+        422 - Unprocessable Entity, if a freelancer with the same email already exists.
+
+# etc.
