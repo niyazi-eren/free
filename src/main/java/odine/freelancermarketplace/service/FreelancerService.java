@@ -11,6 +11,7 @@ import odine.freelancermarketplace.repository.DesignToolRepository;
 import odine.freelancermarketplace.repository.FreelancerRepository;
 import odine.freelancermarketplace.repository.LanguageRepository;
 import odine.freelancermarketplace.repository.SpecialtyRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,8 +65,8 @@ public class FreelancerService {
         return freelancer;
     }
 
-    public List<Freelancer> findAll() {
-        return freelancerRepository.findAll();
+    public List<Freelancer> findAll(Pageable pageable) {
+        return freelancerRepository.findAllFreelancers(pageable).getContent();
     }
 
     public Freelancer findFreelancerByEmail(String email) {
