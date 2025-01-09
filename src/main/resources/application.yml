@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: freelancer-marketplace
+
+  flyway:
+    enabled: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    password: secret
+    username: myuser
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/freelance
+    username: docker
+    password: secret
+    hikari:
+      auto-commit: false
+      driver-class-name: org.postgresql.Driver
+      minimum-idle: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
