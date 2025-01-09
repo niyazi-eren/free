@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class FreelancersControllerAdvice {
     @ExceptionHandler(FreelancerAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    String ExAlreadyExistsHandler(FreelancerAlreadyExistsException ex) {
+    String freelancerAlreadyExistsHandler(FreelancerAlreadyExistsException ex) {
         return ex.getMessage();
     }
 
     @ExceptionHandler(FreelancerNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String ExNotFoundHandler(FreelancerNotFoundException ex) { return ex.getMessage(); }
+    String freelancerNotFoundHandler(FreelancerNotFoundException ex) { return ex.getMessage(); }
 }

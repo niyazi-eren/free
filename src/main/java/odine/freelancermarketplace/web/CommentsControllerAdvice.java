@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CommentsControllerAdvice {
     @ExceptionHandler(CommentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String ExNotFoundHandler(CommentNotFoundException ex) {
+    String commentNotFoundHandler(CommentNotFoundException ex) {
         return ex.getMessage();
     }
 }
