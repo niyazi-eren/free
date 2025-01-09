@@ -20,14 +20,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final JobRepository jobRepository;
 
-    public Comment createComment(CommentCreationRequest request) {
+    public Comment createComment(Long jobId, CommentCreationRequest request) {
         var comment = new Comment();
         comment.setCommenterName(request.commenterName());
         comment.setContent(request.content());
 
-        var job = jobRepository.findById(request.jobId()).orElseThrow(() -> {
-            log.error("Comment creation failed, job with id: {} not found", request.jobId());
-            return new JobNotFoundException(request.jobId().toString());
+        var job = jobRepository.findById(jobId).orElseThrow(() -> {
+            log.error("Comment creation failed, job with id: {} not found", jobId);
+            return new JobNotFoundException(jobId.toString());
         });
 
         comment.setJob(job);

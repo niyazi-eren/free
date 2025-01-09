@@ -3,7 +3,8 @@ package odine.freelancermarketplace.web;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import odine.freelancermarketplace.dto.projection.JobDetailsProj;
+import odine.freelancermarketplace.dto.projection.JobProj;
+import odine.freelancermarketplace.dto.web.CommentCreationRequest;
 import odine.freelancermarketplace.dto.web.JobCreationRequest;
 import odine.freelancermarketplace.dto.web.JobUpdateRequest;
 import odine.freelancermarketplace.model.Comment;
@@ -31,7 +32,7 @@ public class JobsController {
     }
 
     @GetMapping("/{id}")
-    public JobDetailsProj getJobDetails(@PathVariable Long id) {
+    public JobProj getJobDetails(@PathVariable Long id) {
         return jobService.getJobDetailsById(id);
     }
 
@@ -43,5 +44,11 @@ public class JobsController {
     @GetMapping("/{id}/comments")
     public Set<Comment> getCommentsForJob(@PathVariable Long id) {
         return commentService.getCommentsForJob(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("{id}/comments")
+    public Comment createComment(@PathVariable Long id, @RequestBody CommentCreationRequest request) {
+        return commentService.createComment(id, request);
     }
 }

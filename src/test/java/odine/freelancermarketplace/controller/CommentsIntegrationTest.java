@@ -24,7 +24,6 @@ public class CommentsIntegrationTest extends AbstractDbIntTest {
     void shouldCreateCommentForJob() {
         String requestBody = """
                 {
-                  "job_id": 1,
                   "commenter_name": "Jone",
                   "content": "I'd like to apply!"
                 }
@@ -34,7 +33,7 @@ public class CommentsIntegrationTest extends AbstractDbIntTest {
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
-                .post("/api/comments")
+                .post("/api/jobs/1/comments")
                 .then()
                 .statusCode(201)
                 .body("commenterName", equalTo("Jone"))

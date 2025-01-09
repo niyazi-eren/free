@@ -2,7 +2,6 @@ package odine.freelancermarketplace.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import odine.freelancermarketplace.dto.projection.JobDetailsProj;
 import odine.freelancermarketplace.dto.projection.JobProj;
 import odine.freelancermarketplace.dto.web.JobCreationRequest;
 import odine.freelancermarketplace.dto.web.JobUpdateRequest;
@@ -45,7 +44,7 @@ public class JobService {
         return jobRepository.getJobsForFreelancerById(id);
     }
 
-    public JobDetailsProj getJobDetailsById(Long id) {
+    public JobProj getJobDetailsById(Long id) {
         return jobRepository.getJobDetailsById(id).orElseThrow(() -> {
             log.error("Job with id {} not found", id);
             return new JobNotFoundException(id.toString());

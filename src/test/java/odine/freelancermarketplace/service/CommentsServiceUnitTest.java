@@ -31,9 +31,10 @@ public class CommentsServiceUnitTest {
     @Test
     void shouldCreateComment() {
         // Given
-        CommentCreationRequest request = new CommentCreationRequest(1L, "John Doe", "Great job!");
+        CommentCreationRequest request = new CommentCreationRequest("John Doe", "Great job!");
         Job job = new Job();
-        job.setId(1L);
+        Long jobId = 1L;
+        job.setId(jobId);
 
         when(jobRepository.findById(1L)).thenReturn(Optional.of(job));
 
@@ -45,7 +46,7 @@ public class CommentsServiceUnitTest {
         when(commentRepository.save(any(Comment.class))).thenReturn(expectedComment);
 
         // When
-        Comment result = commentsService.createComment(request);
+        Comment result = commentsService.createComment(jobId, request);
 
         // Then
         assertThat(result.getCommenterName()).isEqualTo("John Doe");
