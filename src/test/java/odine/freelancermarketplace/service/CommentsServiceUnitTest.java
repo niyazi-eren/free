@@ -1,13 +1,11 @@
-package odine.freelancermarketplace.controller;
+package odine.freelancermarketplace.service;
 
 import odine.freelancermarketplace.dto.web.CommentCreationRequest;
 import odine.freelancermarketplace.dto.web.CommentUpdateRequest;
-import odine.freelancermarketplace.exception.CommentNotFoundException;
 import odine.freelancermarketplace.model.Comment;
 import odine.freelancermarketplace.model.Job;
 import odine.freelancermarketplace.repository.CommentRepository;
 import odine.freelancermarketplace.repository.JobRepository;
-import odine.freelancermarketplace.service.CommentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

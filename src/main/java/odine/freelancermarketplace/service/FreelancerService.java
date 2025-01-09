@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import odine.freelancermarketplace.dto.web.FreelancerCreationRequest;
 import odine.freelancermarketplace.exception.FreelancerAlreadyExistsException;
 import odine.freelancermarketplace.exception.FreelancerNotFoundException;
+import odine.freelancermarketplace.messaging.EvaluationRequestProducer;
 import odine.freelancermarketplace.model.*;
 import odine.freelancermarketplace.repository.DesignToolRepository;
 import odine.freelancermarketplace.repository.FreelancerRepository;
@@ -13,9 +14,6 @@ import odine.freelancermarketplace.repository.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 @Slf4j
@@ -26,6 +24,7 @@ public class FreelancerService {
     private final SpecialtyRepository specialtyRepository;
     private final DesignToolRepository designToolRepository;
     private final FreelancerRepository freelancerRepository;
+    private final EvaluationRequestProducer evaluationRequestProducer;
 
     public Freelancer createFreelancer(FreelancerCreationRequest request) {
         // check if freelancer already exists by mail
@@ -35,64 +34,34 @@ public class FreelancerService {
             throw new FreelancerAlreadyExistsException(request.email());
         }
 
-        return switch (request.freelancerType()) {
-            case DESIGNER -> {
-                var freelancer = new Designer();
-                setFreelancerAttributes(freelancer, request);
+        Freelancer freelancer =
+                switch (request.freelancerType()) {
+                    case DESIGNER -> {
+                        var designer = new Designer();
+                        setFreelancerAttributes(designer, request);
 
-                // designer attributes
-                freelancer.setPortfolioUrl(request.portfolioUrl());
-                setDesignTools(request.designTools(), freelancer);
+                        // designer attributes
+                        designer.setPortfolioUrl(request.portfolioUrl());
+                        setDesignTools(request.designTools(), designer);
 
-                updateFreelancerScoreAsync(request);
-                yield freelancerRepository.save(freelancer);
-            }
-            case SOFTWARE_DEVELOPER -> {
-                var freelancer = new SoftwareDeveloper();
-                setFreelancerAttributes(freelancer, request);
-
-                // dev attributes
-                setLanguages(request.languages(), freelancer);
-                setSpecialties(request.specialties(), freelancer);
-
-                updateFreelancerScoreAsync(request);
-                yield freelancerRepository.save(freelancer);
-            }
-        };
-    }
-
-    private void updateFreelancerScoreAsync(FreelancerCreationRequest request) {
-        ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
-        // 1. evaluate freelancer score
-        CompletableFuture.supplyAsync(() -> {
-                    try {
-                        Thread.sleep(3000); // simulate work
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException(e);
+                        yield freelancerRepository.save(designer);
                     }
-                    return computeFreelancerScore(request);
-                }, executor)
-                .thenApplyAsync(score -> {
-                    try {
-                        // 2. get score and update freelancer score in db
-                        return freelancerRepository.updateEvaluationScore(request.email(), score);
-                    } catch (Exception e) {
-                        log.error("Error updating freelancer score", e);
-                        return 0;
+                    case SOFTWARE_DEVELOPER -> {
+                        var developer = new SoftwareDeveloper();
+                        setFreelancerAttributes(developer, request);
+
+                        // dev attributes
+                        setLanguages(request.languages(), developer);
+                        setSpecialties(request.specialties(), developer);
+
+                        yield freelancerRepository.save(developer);
                     }
-                }, executor)
-                // 3. get response from db and close service
-                .whenComplete((numUpdatedEntities, exception) -> {
-                    if (numUpdatedEntities != 1) {
-                        log.error("Error updating freelancer score.");
-                    }
-                    if (exception != null) {
-                        log.error("Async job failed.", exception);
-                    }
-                    executor.shutdown();
-                });
+                };
+
+        // async score eval
+        evaluationRequestProducer.send(request);
+
+        return freelancer;
     }
 
     public List<Freelancer> findAll() {
@@ -113,14 +82,6 @@ public class FreelancerService {
                                    String type,
                                    List<String> designTools) {
         return freelancerRepository.search(name, city, type, specialties, designTools);
-    }
-
-    private Integer computeFreelancerScore(FreelancerCreationRequest request) {
-        int score = switch (request.freelancerType()) {
-            case DESIGNER -> Math.min(request.designTools().size(), 10);
-            case SOFTWARE_DEVELOPER -> Math.min(request.specialties().size() * request.languages().size(), 10);
-        };
-        return Math.max(score, 1);
     }
 
     private void setFreelancerAttributes(Freelancer freelancer, FreelancerCreationRequest request) {

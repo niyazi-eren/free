@@ -6,6 +6,7 @@ services:
     image: neren3/freelancer-marketplace:latest
     environment:
       - DB_HOST=postgres
+      - MQ_HOST=rabbitmq
     ports:
       - "8080:8080"
 
@@ -21,5 +22,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    container_name: rabbit_local
+    image: rabbitmq:latest
+    environment:
+      - RABBITMQ_DEFAULT_PASS=secret
+      - RABBITMQ_DEFAULT_USER=myuser
+    ports:
+      - "5672:5672"
+      -
 volumes:
   postgres_data:

@@ -9,7 +9,7 @@ spring:
     enabled: true
 
   rabbitmq:
-    host: localhost
+    host: ${MQ_HOST:localhost}
     port: 5672
     password: secret
     username: myuser
