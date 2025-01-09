@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static odine.freelancermarketplace.enums.FreelancerType.DESIGNER;
 
 @Slf4j
 @Service
@@ -36,28 +35,30 @@ public class FreelancerService {
             throw new FreelancerAlreadyExistsException(request.email());
         }
 
-        if (request.freelancerType() == DESIGNER) {
-            var freelancer = new Designer();
-            setFreelancerAttributes(freelancer, request);
+        return switch (request.freelancerType()) {
+            case DESIGNER -> {
+                var freelancer = new Designer();
+                setFreelancerAttributes(freelancer, request);
 
-            // designer attributes
-            freelancer.setPortfolioUrl(request.portfolioUrl());
-            setDesignTools(request.designTools(), freelancer);
+                // designer attributes
+                freelancer.setPortfolioUrl(request.portfolioUrl());
+                setDesignTools(request.designTools(), freelancer);
 
-            updateFreelancerScoreAsync(request);
-            return freelancerRepository.save(freelancer);
-        }
+                updateFreelancerScoreAsync(request);
+                yield freelancerRepository.save(freelancer);
+            }
+            case SOFTWARE_DEVELOPER -> {
+                var freelancer = new SoftwareDeveloper();
+                setFreelancerAttributes(freelancer, request);
 
+                // dev attributes
+                setLanguages(request.languages(), freelancer);
+                setSpecialties(request.specialties(), freelancer);
 
-        var freelancer = new SoftwareDeveloper();
-        setFreelancerAttributes(freelancer, request);
-
-        // freelancer attributes
-        setLanguages(request.languages(), freelancer);
-        setSpecialties(request.specialties(), freelancer);
-
-        updateFreelancerScoreAsync(request);
-        return freelancerRepository.save(freelancer);
+                updateFreelancerScoreAsync(request);
+                yield freelancerRepository.save(freelancer);
+            }
+        };
     }
 
     private void updateFreelancerScoreAsync(FreelancerCreationRequest request) {
