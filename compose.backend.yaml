@@ -30,6 +30,5 @@ services:
       - RABBITMQ_DEFAULT_USER=myuser
     ports:
       - "5672:5672"
-      -
 volumes:
   postgres_data:
