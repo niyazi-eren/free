@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "f908cca8-2cd4-4687-b73c-d02bc3af12e6",
-		"name": "Odine Freelance Marketplace API integ",
+		"_postman_id": "9fee7258-2a6b-43c2-aa4a-cd4d248669d1",
+		"name": "Freelance API local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40846776"
 	},
@@ -346,7 +346,7 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "http://13.38.93.138:8080",
+			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
